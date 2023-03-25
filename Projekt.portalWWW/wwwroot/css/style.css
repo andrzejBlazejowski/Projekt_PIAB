@@ -1,2 +1,18 @@
 ﻿body {
 }
+
+.primary_bg {
+    background-color: #7db557 !important;
+}
+
+.secondary_bg {
+    background-color: rgba(220,220,220,.5);
+}
+
+.primary_text {
+    color: #444 !important;
+}
+
+.primary_link {
+    color: #7db557 !important;
+}
