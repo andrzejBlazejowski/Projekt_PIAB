@@ -6,6 +6,11 @@ namespace Projekt.Data.Data.Shop
 {
     public class Product : BaseSeoData
     {
+        [Required(ErrorMessage = "Treść musi zostać wypełniona")]
+        [MaxLength(600, ErrorMessage = "Treść może zawierać maksymalnie 600 znaków ")]
+        [Display(Name = "Treść")]
+        public string? Content { get; set; }
+
         [Required(ErrorMessage = "Pole Cena jest aryckluczowa w produktach, dlatego uprzejmie uprasza się o uzupełnienie jej")]
         [Column(TypeName = "decimal")]
         [Display(Name = "Cena")]
