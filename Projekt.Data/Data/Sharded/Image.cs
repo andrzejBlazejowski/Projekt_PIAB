@@ -12,5 +12,6 @@ namespace Projekt.Data.Data.Sharded
 
         public List<Product> Product { get; set; }
         public List<Site> Site { get; set; }
+        public List<BlogPost> BlogPost { get; set; }
     }
 }
