@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
+using Microsoft.Extensions.DependencyInjection;
+using Projekt.intranet;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddDbContext<ProjectContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProjectContext") ?? throw new InvalidOperationException("Connection string 'ProjectContext' not found.")));
 

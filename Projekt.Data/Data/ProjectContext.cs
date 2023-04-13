@@ -6,8 +6,7 @@ namespace Projekt.Data.Data
 {
     public class ProjectContext: DbContext
     {
-        public ProjectContext(DbContextOptions<ProjectContext> options)
-            : base(options)
+        public ProjectContext(DbContextOptions options) : base(options)
         {
         }
 
