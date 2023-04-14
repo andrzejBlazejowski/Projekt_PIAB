@@ -18,6 +18,26 @@
                 <textarea rows="5" asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="MetaTitle" class="control-label"></label>
+                <input asp-for="MetaTitle" class="form-control" />
+                <span asp-validation-for="MetaTitle" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="3" asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="MetaDescription" class="control-label"></label>
+                <textarea rows="3" asp-for="MetaDescription" class="form-control"></textarea>
+                <span asp-validation-for="MetaDescription" class="text-danger"></span>
+            </div>
             <div class="col-md-2 form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
@@ -46,26 +66,6 @@
             <div class="col-md-6 form-group">
                 <label asp-for="ImageId" class="control-label"></label>
                 <select asp-for="ImageId" class ="form-control" asp-items="ViewBag.ImageId"></select>
-            </div>
-            <div class="col-md-6 form-group">
-                <label asp-for="MetaTitle" class="control-label"></label>
-                <input asp-for="MetaTitle" class="form-control" />
-                <span asp-validation-for="MetaTitle" class="text-danger"></span>
-            </div>
-            <div class="col-md-6 form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea rows="3" asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="col-md-6 form-group">
-                <label asp-for="MetaDescription" class="control-label"></label>
-                <textarea rows="3" asp-for="MetaDescription" class="form-control"></textarea>
-                <span asp-validation-for="MetaDescription" class="text-danger"></span>
-            </div>
-            <div class="col-md-6 form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="col-md-2 form-group form-check">
                 <label class="form-check-label">
