@@ -6,95 +6,95 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
-using Projekt.Data.Data.CMS;
 using Projekt.Data.Data.Sharded;
+using Projekt.Data.Data.Shop;
 
 namespace Projekt.intranet.Controllers
 {
-    public class BlogPostsController : Controller
+    public class ProductsController : Controller
     {
         private readonly ProjectContext _context;
 
-        public BlogPostsController(ProjectContext context)
+        public ProductsController(ProjectContext context)
         {
             _context = context;
         }
 
-        // GET: BlogPosts
+        // GET: Products
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.BlogPost.Include(b => b.HeaderImage);
+            var projectContext = _context.Product.Include(p => p.Image);
             return View(await projectContext.ToListAsync());
         }
 
-        // GET: BlogPosts/Details/5
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost
-                .Include(b => b.HeaderImage)
+            var product = await _context.Product
+                .Include(p => p.Image)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(product);
         }
 
-        // GET: BlogPosts/Create
+        // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData");
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData");
             return View();
         }
 
-        // POST: BlogPosts/Create
+        // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
+        public async Task<IActionResult> Create([Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(blogPost);
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", product.ImageId);
+            return View(product);
         }
 
-        // GET: BlogPosts/Edit/5
+        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost.FindAsync(id);
-            if (blogPost == null)
+            var product = await _context.Product.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", product.ImageId);
+            return View(product);
         }
 
-        // POST: BlogPosts/Edit/5
+        // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
         {
-            if (id != blogPost.Id)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -103,12 +103,12 @@ namespace Projekt.intranet.Controllers
             {
                 try
                 {
-                    _context.Update(blogPost);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlogPostExists(blogPost.Id))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -119,51 +119,51 @@ namespace Projekt.intranet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", product.ImageId);
+            return View(product);
         }
 
-        // GET: BlogPosts/Delete/5
+        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost
-                .Include(b => b.HeaderImage)
+            var product = await _context.Product
+                .Include(p => p.Image)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(product);
         }
 
-        // POST: BlogPosts/Delete/5
+        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.BlogPost == null)
+            if (_context.Product == null)
             {
-                return Problem("Entity set 'ProjectContext.BlogPost'  is null.");
+                return Problem("Entity set 'ProjectContext.Product'  is null.");
             }
-            var blogPost = await _context.BlogPost.FindAsync(id);
-            if (blogPost != null)
+            var product = await _context.Product.FindAsync(id);
+            if (product != null)
             {
-                _context.BlogPost.Remove(blogPost);
+                _context.Product.Remove(product);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BlogPostExists(int id)
+        private bool ProductExists(int id)
         {
-          return (_context.BlogPost?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

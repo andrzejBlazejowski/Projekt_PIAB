@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Projekt.Data.Data.Sharded
 {
-    public class Image : BaseData
+    public class Picture : BaseData
     {
         [Required(ErrorMessage = "musisz wybrać obrazek")]
         [Display(Name = "obrazek")]

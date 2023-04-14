@@ -8,7 +8,7 @@ namespace Projekt.Data.Data
         public ProjectContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ProjectContext>();
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ProjectContext;Trusted_Connection=True;MultipleActiveResultSets=true User ID=Andrz;pwd=megaTruden");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ProjectContext;Trusted_Connection=True;MultipleActiveResultSets=true;");
 
             return new ProjectContext(optionsBuilder.Options);
         }

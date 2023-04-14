@@ -11,90 +11,90 @@ using Projekt.Data.Data.Sharded;
 
 namespace Projekt.intranet.Controllers
 {
-    public class BlogPostsController : Controller
+    public class SitesController : Controller
     {
         private readonly ProjectContext _context;
 
-        public BlogPostsController(ProjectContext context)
+        public SitesController(ProjectContext context)
         {
             _context = context;
         }
 
-        // GET: BlogPosts
+        // GET: Sites
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.BlogPost.Include(b => b.HeaderImage);
+            var projectContext = _context.Site.Include(s => s.HeaderImage);
             return View(await projectContext.ToListAsync());
         }
 
-        // GET: BlogPosts/Details/5
+        // GET: Sites/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.Site == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost
-                .Include(b => b.HeaderImage)
+            var site = await _context.Site
+                .Include(s => s.HeaderImage)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            if (site == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(site);
         }
 
-        // GET: BlogPosts/Create
+        // GET: Sites/Create
         public IActionResult Create()
         {
             ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData");
             return View();
         }
 
-        // POST: BlogPosts/Create
+        // POST: Sites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
+        public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Site site)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(blogPost);
+                _context.Add(site);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", site.HeaderImageId);
+            return View(site);
         }
 
-        // GET: BlogPosts/Edit/5
+        // GET: Sites/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.Site == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost.FindAsync(id);
-            if (blogPost == null)
+            var site = await _context.Site.FindAsync(id);
+            if (site == null)
             {
                 return NotFound();
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", site.HeaderImageId);
+            return View(site);
         }
 
-        // POST: BlogPosts/Edit/5
+        // POST: Sites/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Site site)
         {
-            if (id != blogPost.Id)
+            if (id != site.Id)
             {
                 return NotFound();
             }
@@ -103,12 +103,12 @@ namespace Projekt.intranet.Controllers
             {
                 try
                 {
-                    _context.Update(blogPost);
+                    _context.Update(site);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlogPostExists(blogPost.Id))
+                    if (!SiteExists(site.Id))
                     {
                         return NotFound();
                     }
@@ -119,51 +119,51 @@ namespace Projekt.intranet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", site.HeaderImageId);
+            return View(site);
         }
 
-        // GET: BlogPosts/Delete/5
+        // GET: Sites/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.Site == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost
-                .Include(b => b.HeaderImage)
+            var site = await _context.Site
+                .Include(s => s.HeaderImage)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            if (site == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(site);
         }
 
-        // POST: BlogPosts/Delete/5
+        // POST: Sites/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.BlogPost == null)
+            if (_context.Site == null)
             {
-                return Problem("Entity set 'ProjectContext.BlogPost'  is null.");
+                return Problem("Entity set 'ProjectContext.Site'  is null.");
             }
-            var blogPost = await _context.BlogPost.FindAsync(id);
-            if (blogPost != null)
+            var site = await _context.Site.FindAsync(id);
+            if (site != null)
             {
-                _context.BlogPost.Remove(blogPost);
+                _context.Site.Remove(site);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BlogPostExists(int id)
+        private bool SiteExists(int id)
         {
-          return (_context.BlogPost?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Site?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

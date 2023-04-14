@@ -16,7 +16,8 @@ namespace Projekt.Data.Data.CMS
         public string? Content { get; set; }
 
         public int HeaderImageId { get; set; }
-        public Image? HeaderImage { get; set; }
+        [Display(Name = "Obrazek Nagłówka")]
+        public Picture? HeaderImage { get; set; }
 
     }
 }

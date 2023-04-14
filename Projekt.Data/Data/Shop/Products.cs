@@ -35,7 +35,7 @@ namespace Projekt.Data.Data.Shop
         public string? BrandName { get; set; }
 
         public int ImageId { get; set; }
-        public Image? Image { get; set; }
+        public Picture? Image { get; set; }
 
     }
 }

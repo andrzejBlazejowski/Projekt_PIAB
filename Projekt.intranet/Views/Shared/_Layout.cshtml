@@ -48,51 +48,53 @@
                                 <div class="collapse" id="sidebar-products">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="#"
-                                               class="nav-link">produkty</a>
+                                            @Html.ActionLink("produkty", "", "Products", null, new { @class = "nav-link"})
                                         </li>
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
-                                               kategorie
+                                            <s>kategorie</s>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="#"
-                                               class="nav-link">Klienci</a>
+                                           class="nav-link"><s>Klienci</s></a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="#"
-                                               class="nav-link">Statystyki</a>
+                                           class="nav-link"><s>Statystyki</s></a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#sidebar-tasks" data-bs-toggle="collapse"
-                                   role="button" aria-expanded="false" aria-controls="sidebar-tasks">
-                                    <i class="bi bi-kanban"></i> Blog
-                                </a>
+                                @Html.ActionLink("Blog", "", "BlogPosts", null, new { @class = "nav-link bi bi-blockquote-left"})
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#sidebar-user" data-bs-toggle="collapse"
-                                   role="button" aria-expanded="false" aria-controls="sidebar-user">
-                                    <i class="bi bi-people"></i> Użytkownicy
-                                </a>
+                                @Html.ActionLink("Strony", "", "Sites", null, new { @class = "nav-link bi bi-newspaper"})
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#sidebar-settings" data-bs-toggle="collapse"
-                                   role="button" aria-expanded="false" aria-controls="sidebar-settings">
-                                <i class="bi bi-gear"></i> Ustawienia
-                                </a>
+                                @Html.ActionLink("Element Faq", "", "FaqItems", null, new { @class = "nav-link bi bi-info"})
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#sidebar-authentication"
-                                   data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                   aria-controls="sidebar-authentication">
-                                    <i class="bi bi-person-bounding-box"></i>
-                                    Profil
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sidebar-user" data-bs-toggle="collapse"
+                                       role="button" aria-expanded="false" aria-controls="sidebar-user">
+                                        <i class="bi bi-people"></i> <s>Użytkownicy</s>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sidebar-settings" data-bs-toggle="collapse"
+                                       role="button" aria-expanded="false" aria-controls="sidebar-settings">
+                                    <i class="bi bi-gear"></i> <s>Ustawienia</s>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sidebar-authentication"
+                                       data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                       aria-controls="sidebar-authentication">
+                                        <i class="bi bi-person-bounding-box"></i>
+                                    <s>Profil</s>
+                                    </a>
+                                </li>
                         </ul>
                         <hr class="navbar-divider my-4 opacity-70">
                     <ul class="navbar-nav  flex-column">
@@ -102,14 +104,14 @@
                             <li class="nav-item">
                                 <a class="nav-link py-2" href="/docs">
                                     <i class="bi bi-code-square"></i>
-                                    Kontakt
+                                <s>Kontakt</s>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-2 d-flex align-items-center"
                                    href="https://webpixels.io/themes/clever-admin-dashboard-template/releases"
                                    target="_blank">
-                                    <i class="bi bi-journals"></i> <span>Informacje</span>
+                                    <i class="bi bi-journals"></i> <s>Informacje</s>
                                 </a>
                             </li>
                         </ul>
@@ -150,7 +152,7 @@
                     </div>
                 </div>
             </nav>
-            <div class="flex-lg-1 h-screen overflow-y-lg-auto">
+            <div class="flex-lg-1 h-screen overflow-y-lg-auto flex-grow-1">
                 <nav class="navbar navbar-light position-lg-sticky top-lg-0 d-none d-lg-block overlap-10 flex-none bg-white border-bottom px-0 py-3"
                      id="topbar">
                     <div class="container-fluid">

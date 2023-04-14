@@ -24,16 +24,20 @@ namespace Projekt.Data.Data.Sharded
 
         [Required(ErrorMessage = "Pole LastModificationDate musi być zdefiniowany - to najprawdopodobniej problem z programem")]
         [Column(TypeName = "datetime")]
+        [Display(Name = "ostatnio zmodyfikowany")]
         public DateTime LastModificationDate { get; set; }
 
         [Required(ErrorMessage = "Pole LastModifiedBy musi być zdefiniowany - to najprawdopodobniej problem z programem")]
+        [Display(Name = "Ostatnio zmodyfikowany przez")]
         public int LastModifiedBy { get; set; }
 
         [Required(ErrorMessage = "Pole CreationDate musi być zdefiniowany - to najprawdopodobniej problem z programem")]
         [Column(TypeName = "datetime")]
+        [Display(Name = "Stworzony")]
         public DateTime CreationDate { get; set; }
 
         [Required(ErrorMessage = "Pole CreatedBy musi być zdefiniowany - to najprawdopodobniej problem z programem")]
+        [Display(Name = "Stworzony przez")]
         public int CreatedBy { get; set; }
     }
 }

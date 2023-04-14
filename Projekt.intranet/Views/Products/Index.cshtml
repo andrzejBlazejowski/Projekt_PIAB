@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Projekt.Data.Data.Shop.Product>
+
+@{
+    ViewData["Title"] = "Lista Produktów w sklepie";
+}
+
+<h1>
+    @ViewData["Title"]
+</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-sm btn-primary">
+        <span class="pe-2"><i class="bi bi-plus-square-dotted"></i></span>
+        <span>Dodaj</span>
+    </a>
+</p>
+<div class="table-responsive">
+    <table class="table table-hover table-nowrap">
+        <thead class="table-light">
+        <tr>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.VatRate)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.CountInWearhouse)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.IsVisible)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.BrandName)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.MetaTitle)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.MetaDescription)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th  scope="col">
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th  scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VatRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountInWearhouse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsVisible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BrandName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image.ImageData)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MetaTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MetaDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">
+                        <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                            <i class="bi bi-pencil"></i>
+                            Edytuj
+                        </button>
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                            <i class="bi bi-list"></i>
+                            Szczegóły
+                        </button>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">
+                        <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                            <i class="bi bi-trash"></i>
+                            Usuń
+                        </button>
+                    </a>
+                </td>
+        </tr>
+        }
+    </tbody>
+</table>
+</div>

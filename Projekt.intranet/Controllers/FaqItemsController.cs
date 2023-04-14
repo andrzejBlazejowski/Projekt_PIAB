@@ -7,94 +7,90 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
 using Projekt.Data.Data.CMS;
-using Projekt.Data.Data.Sharded;
 
 namespace Projekt.intranet.Controllers
 {
-    public class BlogPostsController : Controller
+    public class FaqItemsController : Controller
     {
         private readonly ProjectContext _context;
 
-        public BlogPostsController(ProjectContext context)
+        public FaqItemsController(ProjectContext context)
         {
             _context = context;
         }
 
-        // GET: BlogPosts
+        // GET: FaqItems
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.BlogPost.Include(b => b.HeaderImage);
-            return View(await projectContext.ToListAsync());
+              return _context.FaqItem != null ? 
+                          View(await _context.FaqItem.ToListAsync()) :
+                          Problem("Entity set 'ProjectContext.FaqItem'  is null.");
         }
 
-        // GET: BlogPosts/Details/5
+        // GET: FaqItems/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.FaqItem == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost
-                .Include(b => b.HeaderImage)
+            var faqItem = await _context.FaqItem
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            if (faqItem == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(faqItem);
         }
 
-        // GET: BlogPosts/Create
+        // GET: FaqItems/Create
         public IActionResult Create()
         {
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData");
             return View();
         }
 
-        // POST: BlogPosts/Create
+        // POST: FaqItems/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
+        public async Task<IActionResult> Create([Bind("Content,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] FaqItem faqItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(blogPost);
+                _context.Add(faqItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            return View(faqItem);
         }
 
-        // GET: BlogPosts/Edit/5
+        // GET: FaqItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.FaqItem == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost.FindAsync(id);
-            if (blogPost == null)
+            var faqItem = await _context.FaqItem.FindAsync(id);
+            if (faqItem == null)
             {
                 return NotFound();
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            return View(faqItem);
         }
 
-        // POST: BlogPosts/Edit/5
+        // POST: FaqItems/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Content,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] FaqItem faqItem)
         {
-            if (id != blogPost.Id)
+            if (id != faqItem.Id)
             {
                 return NotFound();
             }
@@ -103,12 +99,12 @@ namespace Projekt.intranet.Controllers
             {
                 try
                 {
-                    _context.Update(blogPost);
+                    _context.Update(faqItem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlogPostExists(blogPost.Id))
+                    if (!FaqItemExists(faqItem.Id))
                     {
                         return NotFound();
                     }
@@ -119,51 +115,49 @@ namespace Projekt.intranet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
-            return View(blogPost);
+            return View(faqItem);
         }
 
-        // GET: BlogPosts/Delete/5
+        // GET: FaqItems/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.BlogPost == null)
+            if (id == null || _context.FaqItem == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPost
-                .Include(b => b.HeaderImage)
+            var faqItem = await _context.FaqItem
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            if (faqItem == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(faqItem);
         }
 
-        // POST: BlogPosts/Delete/5
+        // POST: FaqItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.BlogPost == null)
+            if (_context.FaqItem == null)
             {
-                return Problem("Entity set 'ProjectContext.BlogPost'  is null.");
+                return Problem("Entity set 'ProjectContext.FaqItem'  is null.");
             }
-            var blogPost = await _context.BlogPost.FindAsync(id);
-            if (blogPost != null)
+            var faqItem = await _context.FaqItem.FindAsync(id);
+            if (faqItem != null)
             {
-                _context.BlogPost.Remove(blogPost);
+                _context.FaqItem.Remove(faqItem);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BlogPostExists(int id)
+        private bool FaqItemExists(int id)
         {
-          return (_context.BlogPost?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.FaqItem?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
