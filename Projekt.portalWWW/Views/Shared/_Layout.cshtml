@@ -24,25 +24,9 @@
         <div class="nav-background">
             <div class="pattern active" style="background-image: url('/img/header_bg.png');"></div>
         </div>
-        <nav>
-        <div class="nav-wrapper container">
-                <a href="#" class="brand-logo">GoodBeef</a>
-                <ul class="right hide-on-med-and-down">
-                    <li>
-                        @Html.ActionLink("Sklep", "Shop", "Home")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Blog", "Blog", "Home")
-                    </li>
-                    <li>
-                        @Html.ActionLink("FAQ", "Faq", "Home")
-                    </li>
-                    <li><a href="#">O Nas</a></li>
-                    <li><a href="#">Informacje</a></li>
-                    <li><a href="#">Kontakt</a></li>
-                </ul>
-            </div>
-        </nav>
+
+        @await Html.PartialAsync("DynamicTopMenuLinks", (IEnumerable<Projekt.Data.Data.CMS.Site>) ViewBag.Sites)
+
         <div class="nav-header center">
 
             <h1>GoodBeef</h1>

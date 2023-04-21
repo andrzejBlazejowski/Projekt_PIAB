@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Projekt.Data.Data.Shop.Product>
+
+@{
+    ViewData["Title"] = "Ostatnie wpisy na blogu";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col s12">
+        
+        
+    @foreach (var item in Model)
+    {
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-image">
+                    <img class="materialboxed" height="350" style="object-fit: cover;" src="/img/beef_1.jpg">
+                    <span class="primary_text card-title secondary_bg col s12">@item.Name</span>
+                    <a class="btn-floating halfway-fab waves-effect waves-light primary_bg"><i class="material-icons">add_shopping_cart</i></a>
+                </div>
+                <div class="card-content">
+                        <p>@item.Content?.Substring(0, Math.Min(item.Content.Length, 20)) + "..."; </p>
+                </div>
+                <div class="card-action">
+                    <a class="primary_link" href="@Url.Action("Details", "Product", new { id = item.Id })">
+                        Kup teraz 
+                        <i class="tiny material-icons">add_shopping_cart</i>
+                    </a>
+                    <span class="price"> @item.Price PLN </span>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+</div>

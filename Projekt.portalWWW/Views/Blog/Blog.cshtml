@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Projekt.Data.Data.CMS.BlogPost>
+
+@{
+    ViewData["Title"] = "Ostatnie wpisy na blogu";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+
+        <div class="row">
+            <div class="col s12">
+                <div class="col s12 m6">
+                    <h3>@item.Name</h3>
+                    <div>
+                        @item.Content?.Substring(0, Math.Min(item.Content.Length, 50)) + "...";
+                    </div>
+                    <a class="waves-effect waves-light btn-large primary_bg mt-2">Czytaj teraz</a>
+
+                </div>
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="materialboxed" height="350" style="object-fit: cover;" src="/img/beef_6.jpg">
+                        </div>
+
+                        <div class="card-action">
+                            @Html.ActionLink("czytaj teraz ...","Details","Blog", new {id=item.Id},  new { @class = "primary_link" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+</div>
+

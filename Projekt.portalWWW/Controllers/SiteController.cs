@@ -5,14 +5,16 @@ using System.Diagnostics;
 
 namespace Projekt.portalWWW.Controllers
 {
-    public class HomeController : BaseController
+    public class SiteController : BaseController
     {
-        public HomeController(ProjectContext context) : base(context) { }
+        public SiteController(ProjectContext context) : base(context) { }
 
         public async override Task<IActionResult> Index(int id)
         {
             prepareLayoutData();
-            return View();
+
+            var item = await _context.Site.FindAsync(id);
+            return View(item);
         }
     }
 }

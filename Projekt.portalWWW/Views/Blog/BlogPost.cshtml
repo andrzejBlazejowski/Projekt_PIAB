@@ -1,0 +1,10 @@
+﻿@model Projekt.Data.Data.CMS.BlogPost
+@{
+
+    ViewData["Title"] = Model.Name;
+}
+
+<h1 class="header center orange-text">Aktualnosc : @ViewData["Title"]</h1>
+<div class="row center">
+    <h5 class="header col s12 light"> @Model.Content</h5>
+</div>

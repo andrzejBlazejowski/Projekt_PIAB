@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Projekt.Data.Data.CMS.FaqItem>
+
+@{
+    ViewData["Title"] = "Najczęściej zadawane pytania";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <ul class="collapsible">
+        
+    @foreach (var item in Model)
+    {
+        <li>
+            <div class="collapsible-header"><i class="material-icons">question_answer</i>@item.Name</div>
+            <div class="collapsible-body"><span>@item.Content</span></div>
+        </li>
+    }
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+    });
+</script>

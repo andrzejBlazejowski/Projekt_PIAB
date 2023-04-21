@@ -5,9 +5,9 @@ using System.Diagnostics;
 
 namespace Projekt.portalWWW.Controllers
 {
-    public class HomeController : BaseController
+    public class FaqItemController : BaseController
     {
-        public HomeController(ProjectContext context) : base(context) { }
+        public FaqItemController(ProjectContext context) : base(context) { }
 
         public async override Task<IActionResult> Index(int id)
         {

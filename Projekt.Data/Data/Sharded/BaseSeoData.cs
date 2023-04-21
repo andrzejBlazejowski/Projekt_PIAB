@@ -11,5 +11,9 @@ namespace Projekt.Data.Data.Sharded
         [MaxLength(250, ErrorMessage = "Opis może zawierać maksymalnie 250 znaków ")]
         [Display(Name = "Meta opis")]
         public string? MetaDescription { get; set; }
+/*
+        [MaxLength(250, ErrorMessage = "przyjazny link dla strony")]
+        [Display(Name = "link")]
+        public string? FriendlyLink { get; set; }*/
     }
 }
