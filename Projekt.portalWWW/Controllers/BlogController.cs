@@ -19,5 +19,13 @@ namespace Projekt.portalWWW.Controllers
                     select BlogPost
                 ).ToList());
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            prepareLayoutData();
+
+            var item = await _context.BlogPost.FindAsync(id);
+            return View(item);
+        }
     }
 }
