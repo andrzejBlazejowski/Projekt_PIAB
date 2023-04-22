@@ -6,16 +6,18 @@ using System.Diagnostics;
 
 namespace Projekt.portalWWW.Controllers
 {
-    public class BlogPostController : BaseController
+    public class BlogController : BaseController
     {
-        public BlogPostController(ProjectContext context) : base(context) { }
+        public BlogController(ProjectContext context) : base(context) { }
 
         public async override Task<IActionResult> Index(int id)
         {
             prepareLayoutData();
 
-            var item = await _context.BlogPost.FindAsync(id);
-            return View(item);
+            return View((
+                    from BlogPost in _context.BlogPost
+                    select BlogPost
+                ).ToList());
         }
     }
 }

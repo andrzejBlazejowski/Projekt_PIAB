@@ -12,6 +12,7 @@ namespace Projekt.portalWWW.Controllers
         public async override Task<IActionResult> Index(int id)
         {
             prepareLayoutData();
+
             return View();
         }
     }

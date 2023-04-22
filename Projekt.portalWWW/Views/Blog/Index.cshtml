@@ -15,9 +15,9 @@
                 <div class="col s12 m6">
                     <h3>@item.Name</h3>
                     <div>
-                        @item.Content?.Substring(0, Math.Min(item.Content.Length, 50)) + "...";
+                        @item.Content?.Substring(0, Math.Min(item.Content.Length, 500))
                     </div>
-                    <a class="waves-effect waves-light btn-large primary_bg mt-2">Czytaj teraz</a>
+                    @Html.ActionLink("Czytaj teraz","Details","Blog", new {id=item.Id},  new { @class = "waves-effect waves-light btn-large primary_bg mt-2" })
 
                 </div>
                 <div class="col s12 m6">

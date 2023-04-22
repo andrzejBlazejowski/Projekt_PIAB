@@ -5,14 +5,18 @@ using System.Diagnostics;
 
 namespace Projekt.portalWWW.Controllers
 {
-    public class FaqItemController : BaseController
+    public class ShopController : BaseController
     {
-        public FaqItemController(ProjectContext context) : base(context) { }
+        public ShopController(ProjectContext context) : base(context) { }
 
         public async override Task<IActionResult> Index(int id)
         {
             prepareLayoutData();
-            return View();
+
+            return View((
+                from Product in _context.Product
+                select Product
+            ).ToList());
         }
     }
 }

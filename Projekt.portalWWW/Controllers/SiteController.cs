@@ -16,5 +16,13 @@ namespace Projekt.portalWWW.Controllers
             var item = await _context.Site.FindAsync(id);
             return View(item);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            prepareLayoutData();
+
+            var item = await _context.Site.FindAsync(id);
+            return View(item);
+        }
     }
 }
