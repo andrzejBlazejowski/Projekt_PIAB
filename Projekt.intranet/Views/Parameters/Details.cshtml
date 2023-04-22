@@ -1,0 +1,189 @@
+﻿@model Projekt.Data.Data.CMS.Parameter
+@{
+    ViewData["Title"] = "Szczegóły parametru strony";
+}
+
+
+<div class="container-fluid max-w-screen-lg vstack ">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-1">@ViewData["Title"]</h4>
+            <div class="btn-group mt-2 mb-2">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="m-1">
+                    <button type="button" class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-pencil"></i>
+                        Edytuj
+                    </button>
+                </a>
+                <a asp-action="Index" class="m-1">
+                    <button type="button" class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-arrow-bar-left"></i>
+                        Wróć do listy
+                    </button>
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model?.Id" class="m-1">
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                        Usuń
+                    </button>
+                </a>
+            </div>
+
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item px-6 d-flex align-items-center border-top">
+                <div class="col-6">
+                    <span class="text-xs ls-wide font-semibold text-uppercase text-muted">pole</span>
+                </div>
+                <div class="col-6">
+                    <span class="text-xs ls-wide font-semibold text-uppercase text-muted">zawartość</span>
+                </div>
+            </li>
+
+
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.Key)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.Key)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.Value)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.Name)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.Description)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.IsActive)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.LastModificationDate)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.LastModificationDate)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.LastModifiedBy)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.CreationDate)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        </li>
+            <li class="list-group-item px-6 d-flex align-items-center">
+                <div class="col-6">
+                    <h6 class="font-semibold">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        
+                    </div>
+                </div>
+            </li>
+        </li>
+        </h6>
+                </div>
+                <div class="col-6 text-lg">
+                    <div class="form-check">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+    </dl>
+</div>

@@ -173,19 +173,7 @@
                     <div class="col s12 m4">
                         <h5>Menu</h5>
                         <ul>
-
-                            <li><a href="/">Strona startowa</a></li>
-
-                            <li><a href="/collections">Polityka Prywatności</a></li>
-
-                            <li><a href="/blogs/news">Regulamin</a></li>
-
-                            <li><a href="/blogs/news">Dostawa</a></li>
-                            <li><a href="/blogs/news">Płatność</a></li>
-                            <li><a href="/blogs/news">zwroty</a></li>
-                            <li><a href="/blogs/news">FAQ</a></li>
-                            <li><a href="/blogs/news">Kontakt</a></li>
-
+                            @await Html.PartialAsync("DynamicBottomMenuLinks", (IEnumerable<Projekt.Data.Data.CMS.Site>) ViewBag.Sites)
                         </ul>
                     </div>
 

@@ -1,3 +1,12 @@
-﻿@model Projekt.Data.Data
+﻿@model IEnumerable<Projekt.Data.Data.CMS.Site>
 
-<span></span>
+
+<li>
+    @Html.ActionLink("FAQ", "Index", "Faq")
+</li>
+@foreach (var item in Model)
+{
+    <li>
+        @Html.ActionLink(item.Id.ToString(),"Details","Site", new {id=item.Id}, null)
+    </li>
+}
