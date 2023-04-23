@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,8 +25,13 @@ namespace Projekt.intranet.Controllers
         // GET: BlogPosts
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.BlogPost.Include(b => b.HeaderImage);
-            return View(await projectContext.ToListAsync());
+            return _context.BlogPost != null ?
+                        View(await (
+                          from blogPost in _context.BlogPost
+                          where blogPost.IsActive == true
+                          select blogPost
+                  ).ToListAsync()) :
+                          Problem("Entity set 'ProjectContext.BlogPost'  is null.");
         }
 
         // GET: BlogPosts/Details/5
@@ -60,6 +67,11 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
         {
+            blogPost.LastModificationDate = DateTime.Now;
+            blogPost.LastModifiedBy = 1;
+            blogPost.CreationDate = DateTime.Now;
+            blogPost.CreatedBy = 1;
+            blogPost.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(blogPost);
@@ -94,6 +106,8 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
         {
+            blogPost.LastModificationDate = DateTime.Now;
+            blogPost.LastModifiedBy = 1;
             if (id != blogPost.Id)
             {
                 return NotFound();
@@ -154,7 +168,8 @@ namespace Projekt.intranet.Controllers
             var blogPost = await _context.BlogPost.FindAsync(id);
             if (blogPost != null)
             {
-                _context.BlogPost.Remove(blogPost);
+                blogPost.IsActive = false;
+                _context.Update(blogPost);
             }
             
             await _context.SaveChangesAsync();

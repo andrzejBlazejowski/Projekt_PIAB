@@ -23,8 +23,13 @@ namespace Projekt.intranet.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.Product.Include(p => p.Image);
-            return View(await projectContext.ToListAsync());
+            return _context.Product != null ?
+                        View(await (
+                          from item in _context.Product
+                          where item.IsActive == true
+                          select item
+                  ).ToListAsync()) :
+                          Problem("Entity set 'ProjectContext.Product'  is null.");
         }
 
         // GET: Products/Details/5
@@ -60,6 +65,11 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
         {
+            product.LastModificationDate = DateTime.Now;
+            product.LastModifiedBy = 1;
+            product.CreationDate = DateTime.Now;
+            product.CreatedBy = 1;
+            product.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(product);
@@ -94,6 +104,8 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
         {
+            product.LastModificationDate = DateTime.Now;
+            product.LastModifiedBy = 1;
             if (id != product.Id)
             {
                 return NotFound();
@@ -154,7 +166,8 @@ namespace Projekt.intranet.Controllers
             var product = await _context.Product.FindAsync(id);
             if (product != null)
             {
-                _context.Product.Remove(product);
+                product.IsActive = false;
+                _context.Update(product);
             }
             
             await _context.SaveChangesAsync();

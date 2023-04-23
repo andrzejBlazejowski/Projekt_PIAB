@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
 using Projekt.Data.Data.CMS;
 using Projekt.Data.Data.Sharded;
+using Projekt.Data.Data.Shop;
 
 namespace Projekt.intranet.Controllers
 {
@@ -23,8 +24,13 @@ namespace Projekt.intranet.Controllers
         // GET: Sites
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.Site.Include(s => s.HeaderImage);
-            return View(await projectContext.ToListAsync());
+            return _context.Site != null ?
+                        View(await (
+                          from item in _context.Site
+                          where item.IsActive == true
+                          select item
+                  ).ToListAsync()) :
+                          Problem("Entity set 'ProjectContext.Site'  is null.");
         }
 
         // GET: Sites/Details/5
@@ -60,6 +66,11 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Site site)
         {
+            site.LastModificationDate = DateTime.Now;
+            site.CreationDate = DateTime.Now;
+            site.CreatedBy = 1;
+            site.LastModifiedBy = 1;
+            site.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(site);
@@ -94,6 +105,8 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Site site)
         {
+            site.LastModificationDate = DateTime.Now;
+            site.LastModifiedBy = 1;
             if (id != site.Id)
             {
                 return NotFound();
@@ -154,7 +167,8 @@ namespace Projekt.intranet.Controllers
             var site = await _context.Site.FindAsync(id);
             if (site != null)
             {
-                _context.Site.Remove(site);
+                site.IsActive = false;
+                _context.Update(site);
             }
             
             await _context.SaveChangesAsync();

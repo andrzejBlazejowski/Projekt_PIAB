@@ -23,7 +23,11 @@ namespace Projekt.intranet.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Parameter != null ? 
-                          View(await _context.Parameter.ToListAsync()) :
+                          View(await (
+                            from parameter in _context.Parameter
+                            where parameter.IsActive == true
+                            select parameter
+                    ).ToListAsync()) :
                           Problem("Entity set 'ProjectContext.Parameter'  is null.");
         }
 
@@ -59,9 +63,9 @@ namespace Projekt.intranet.Controllers
         public async Task<IActionResult> Create([Bind("Key,Value,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Parameter parameter)
         {
             parameter.LastModificationDate = DateTime.Now;
+            parameter.LastModifiedBy = 1;
             parameter.CreationDate = DateTime.Now;
             parameter.CreatedBy = 1;
-            parameter.LastModifiedBy = 1;
             parameter.IsActive = true;
             if (ModelState.IsValid)
             {
@@ -95,6 +99,8 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Key,Value,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Parameter parameter)
         {
+            parameter.LastModificationDate = DateTime.Now;
+            parameter.LastModifiedBy = 1;
             if (id != parameter.Id)
             {
                 return NotFound();
@@ -153,9 +159,10 @@ namespace Projekt.intranet.Controllers
             var parameter = await _context.Parameter.FindAsync(id);
             if (parameter != null)
             {
-                _context.Parameter.Remove(parameter);
+                parameter.IsActive = false;
+                _context.Update(parameter);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

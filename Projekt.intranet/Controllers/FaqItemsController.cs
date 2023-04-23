@@ -22,8 +22,12 @@ namespace Projekt.intranet.Controllers
         // GET: FaqItems
         public async Task<IActionResult> Index()
         {
-              return _context.FaqItem != null ? 
-                          View(await _context.FaqItem.ToListAsync()) :
+            return _context.FaqItem != null ?
+                        View(await (
+                          from item in _context.FaqItem
+                          where item.IsActive == true
+                          select item
+                  ).ToListAsync()) :
                           Problem("Entity set 'ProjectContext.FaqItem'  is null.");
         }
 
@@ -58,6 +62,11 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Content,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] FaqItem faqItem)
         {
+            faqItem.LastModificationDate = DateTime.Now;
+            faqItem.LastModifiedBy = 1;
+            faqItem.CreationDate = DateTime.Now;
+            faqItem.CreatedBy = 1;
+            faqItem.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(faqItem);
@@ -90,6 +99,8 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Content,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] FaqItem faqItem)
         {
+            faqItem.LastModificationDate = DateTime.Now;
+            faqItem.LastModifiedBy = 1;
             if (id != faqItem.Id)
             {
                 return NotFound();
@@ -148,7 +159,8 @@ namespace Projekt.intranet.Controllers
             var faqItem = await _context.FaqItem.FindAsync(id);
             if (faqItem != null)
             {
-                _context.FaqItem.Remove(faqItem);
+                faqItem.IsActive = false;
+                _context.Update(faqItem);
             }
             
             await _context.SaveChangesAsync();

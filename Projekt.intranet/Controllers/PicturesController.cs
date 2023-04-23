@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
+using Projekt.Data.Data.CMS;
 using Projekt.Data.Data.Sharded;
 
 namespace Projekt.intranet.Controllers
@@ -22,8 +23,12 @@ namespace Projekt.intranet.Controllers
         // GET: Pictures
         public async Task<IActionResult> Index()
         {
-              return _context.Picture != null ? 
-                          View(await _context.Picture.ToListAsync()) :
+            return _context.Picture != null ?
+                        View(await (
+                          from item in _context.Picture
+                          where item.IsActive == true
+                          select item
+                  ).ToListAsync()) :
                           Problem("Entity set 'ProjectContext.Picture'  is null.");
         }
 
@@ -58,6 +63,11 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ImageData,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Picture picture)
         {
+            picture.LastModificationDate = DateTime.Now;
+            picture.LastModifiedBy = 1;
+            picture.CreationDate = DateTime.Now;
+            picture.CreatedBy = 1;
+            picture.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(picture);
@@ -90,6 +100,8 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ImageData,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Picture picture)
         {
+            picture.LastModificationDate = DateTime.Now;
+            picture.LastModifiedBy = 1;
             if (id != picture.Id)
             {
                 return NotFound();
@@ -148,7 +160,8 @@ namespace Projekt.intranet.Controllers
             var picture = await _context.Picture.FindAsync(id);
             if (picture != null)
             {
-                _context.Picture.Remove(picture);
+                picture.IsActive = false;
+                _context.Update(picture);
             }
             
             await _context.SaveChangesAsync();
