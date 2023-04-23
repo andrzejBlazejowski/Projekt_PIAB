@@ -75,11 +75,8 @@
                             <li class="nav-item">
                                 @Html.ActionLink("Element Faq", "", "FaqItems", null, new { @class = "nav-link bi bi-info"})
                             </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#sidebar-user" data-bs-toggle="collapse"
-                                       role="button" aria-expanded="false" aria-controls="sidebar-user">
-                                        <i class="bi bi-people"></i> <s>Użytkownicy</s>
-                                    </a>
+                        <li class="nav-item">
+                                @Html.ActionLink("Parametry strony", "", "Parameters", null, new { @class = "nav-link bi bi-wrench"})
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#sidebar-settings" data-bs-toggle="collapse"

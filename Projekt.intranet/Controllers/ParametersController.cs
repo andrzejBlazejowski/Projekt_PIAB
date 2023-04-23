@@ -58,6 +58,11 @@ namespace Projekt.intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Key,Value,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Parameter parameter)
         {
+            parameter.LastModificationDate = DateTime.Now;
+            parameter.CreationDate = DateTime.Now;
+            parameter.CreatedBy = 1;
+            parameter.LastModifiedBy = 1;
+            parameter.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(parameter);
