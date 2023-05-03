@@ -1,40 +1,61 @@
 ﻿@model IEnumerable<Projekt.Data.Data.CMS.BlogPost>
 
 @{
-    ViewData["Title"] = "Ostatnie wpisy na blogu";
+    ViewData["Title"] = ViewBag.SiteParameters["BLOG_title"];
 }
 <h2>@ViewData["Title"]</h2>
 
 <div class="row">
-
-    @foreach (var item in Model)
+    @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
     {
-
         <div class="row">
             <div class="col s12">
-                <div class="col s12 m6">
-                    <h3>@item.Name</h3>
-                    <div>
-                        @item.Content?.Substring(0, Math.Min(item.Content.Length, 500))
-                    </div>
-                    @Html.ActionLink("Czytaj teraz","Details","Blog", new {id=item.Id},  new { @class = "waves-effect waves-light btn-large primary_bg mt-2" })
-
-                </div>
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-image">
-                            <img class="materialboxed" height="350" style="object-fit: cover;" src="/img/beef_6.jpg">
+                @if (item.Index % 2 == 0)
+                {
+                    <div class="col s12 m6 order-last">
+                        <h3>@item.Value.Name</h3>
+                        <div>
+                            @item.Value.Content?.Substring(0, Math.Min(item.Value.Content.Length, 500))
                         </div>
+                        @Html.ActionLink((string)ViewBag.SiteParameters["BLOG_read_more"], "Details", "Blog", new { id = item.Value.Id }, new { @class = "waves-effect waves-light btn-large primary_bg mt-2" })
 
-                        <div class="card-action">
-                            @Html.ActionLink("czytaj teraz ...","Details","Blog", new {id=item.Id},  new { @class = "primary_link" })
+                    </div>
+                    <div class="col s12 m6 order-first">
+                        <div class="card">
+                            <div class="card-image">
+                                <img class="materialboxed" height="350" style="object-fit: cover;" src="@item.Value.HeaderImage?.ImageData">
+                            </div>
+
+                            <div class="card-action">
+                                @Html.ActionLink((string)ViewBag.SiteParameters["BLOG_read_more"], "Details", "Blog", new { id = item.Value.Id }, new { @class = "primary_link" })
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="col s12 m6">
+                        <div class="card">
+                            <div class="card-image">
+                                <img class="materialboxed" height="350" style="object-fit: cover;" src="@item.Value.HeaderImage?.ImageData">
+                            </div>
 
+                            <div class="card-action">
+                                @Html.ActionLink((string)ViewBag.SiteParameters["BLOG_read_more"], "Details", "Blog", new { id = item.Value.Id }, new { @class = "primary_link" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6">
+                        <h3>@item.Value.Name</h3>
+                        <div>
+                            @item.Value.Content?.Substring(0, Math.Min(item.Value.Content.Length, 500))
+                        </div>
+                        @Html.ActionLink((string)ViewBag.SiteParameters["BLOG_read_more"], "Details", "Blog", new { id = item.Value.Id }, new { @class = "waves-effect waves-light btn-large primary_bg mt-2" })
+
+                    </div>
+                }
             </div>
         </div>
-
     }
 </div>
 

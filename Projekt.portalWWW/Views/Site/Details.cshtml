@@ -4,7 +4,30 @@
     ViewData["Title"] = Model.Name;
 }
 
-<h1 class="header center ">@ViewData["Title"]</h1>
-<div class="row center">
-    <h5 class="header col s12 light"> @Model.Content</h5>
+<div class="gallery-curve-wrapper" style="display: block; height: 100%; transition: -webkit-transform 0.5s cubic-bezier(0.42, 0, 0.58, 1) 0s;">
+    <a class="gallery-cover gray static" style="transition: opacity 0.3s ease 0s; position:absolute; top:0; left:-230px; right:-230px; z-index: -1;">
+        <img class="responsive-img" src="@Model.HeaderImage.ImageData" alt="Second Blog Post" crossorigin="anonymous">
+        <div class="gradient" style="background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(87, 93, 35) 100%);"></div>
+    </a>
+    <div class="gallery-header" style="height: 62.5px; width: 654.797px; transform: scale(2.03437, 11.984) translate3d(140.314px, -21.208px, 0px); transition: -webkit-transform 0.5s cubic-bezier(0.42, 0, 0.58, 1) 0s; transform-origin: 0px 0px; display: none;">
+        <span style="opacity: 0;">@ViewData["Title"]t</span>
+    </div>
+
+
+    <div class="gallery-body" style="margin-top: 300px; padding: 40px; min-height: 749px; display: block; background:white; border-radius:5px;">
+        <div class="title-wrapper">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+
+        <div class="description">
+            <p><meta charset="utf-8"><span>@Model.Content</span></p>
+            <div class="tags-wrapper">
+                <div class="tags">
+
+                    <div class="chip"><a href="/blogs/news/tagged/dev-blog" title="Show articles tagged Dev Blog">Dev Blog</a></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

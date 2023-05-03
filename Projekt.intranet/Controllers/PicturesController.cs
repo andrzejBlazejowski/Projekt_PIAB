@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
 using Projekt.Data.Data.CMS;
 using Projekt.Data.Data.Sharded;
+using Projekt.Data.Data.Shop;
 
 namespace Projekt.intranet.Controllers
 {
@@ -68,6 +69,10 @@ namespace Projekt.intranet.Controllers
             picture.CreationDate = DateTime.Now;
             picture.CreatedBy = 1;
             picture.IsActive = true;
+            picture.Product = new List<Product>();
+            picture.Site = new List<Site>();
+            picture.BlogPost = new List<BlogPost>();
+  
             if (ModelState.IsValid)
             {
                 _context.Add(picture);

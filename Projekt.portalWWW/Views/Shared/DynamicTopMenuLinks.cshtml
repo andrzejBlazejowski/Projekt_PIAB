@@ -3,16 +3,16 @@
 
 <nav>
     <div class="nav-wrapper container">
-        <a href="#" class="brand-logo">GoodBeef</a>
+        <a href="#" class="brand-logo">@ViewBag.SiteParameters["HOME_title"]</a>
         <ul class="right hide-on-med-and-down">
             <li>
-                @Html.ActionLink("Sklep", "Index", "Shop")
+                @Html.ActionLink((string)ViewBag.SiteParameters["TOP_MENU_shop_name"], "Index", "Shop")
             </li>
             <li>
-                @Html.ActionLink("Blog", "Index", "Blog")
+                @Html.ActionLink((string)ViewBag.SiteParameters["TOP_MENU_blog_name"], "Index", "Blog")
             </li>
             <li>
-                @Html.ActionLink("FAQ", "Index", "Faq")
+                @Html.ActionLink((string)ViewBag.SiteParameters["TOP_MENU_faq"], "Index", "Faq")
             </li>
             @foreach (var item in Model)
             {

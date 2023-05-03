@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Projekt.Data.Data;
 using Projekt.Data.Data.CMS;
 using Projekt.portalWWW.Models;
@@ -22,28 +23,34 @@ namespace Projekt.portalWWW.Controllers
                     from Site in _context.Site
                     select Site
                 ).ToList();
-/*
-            ViewBag.BottomMenu =
-                (
-                // TBD
-                ).ToList();
 
-            ViewBag.SiteParameters =
-                (
-                // TBD
-                ).ToList();
 
-            ViewBag.socialMedia =
-                (
-                // TBD
-                ).ToList();
+            ViewBag.SiteParameters = _context.Parameter
+                .Select(p => new { p.Key, p.Value })
+                .ToDictionary(p => p.Key, p => p.Value);
+            /*
+                        ViewBag.BottomMenu =
+                            (
+                            // TBD
+                            ).ToList();
 
-            ViewBag.paymentMethods =
-                (
-                // TBD
-                ).ToList();
-*/
+                        ViewBag.SiteParameters =
+                            (
+                            // TBD
+                            ).ToList();
+
+                        ViewBag.socialMedia =
+                            (
+                            // TBD
+                            ).ToList();
+
+                        ViewBag.paymentMethods =
+                            (
+                            // TBD
+                            ).ToList();
+            */
         }
+
 
         public abstract Task<IActionResult> Index(int id);
         public IActionResult Shop()
