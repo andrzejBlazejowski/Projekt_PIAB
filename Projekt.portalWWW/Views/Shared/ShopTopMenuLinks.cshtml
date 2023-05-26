@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Projekt.Data.Data.CMS.Site>
+﻿@model IEnumerable<Projekt.Data.Data.Shop.ProductCategory>
 
 
 <nav>
@@ -6,9 +6,7 @@
         <a href="#" class="brand-logo">@ViewBag.SiteParameters["HOME_title"]</a>
         <ul class="right hide-on-med-and-down">
             <li>
-                <a href="@Url.Action("Index", "Shop", new { categoryId = 0 })">
-                    @ViewBag.SiteParameters["TOP_MENU_shop_name"]
-                </a>
+                @Html.ActionLink("Home", "Index", "Home")
             </li>
             <li>
                 @Html.ActionLink((string)ViewBag.SiteParameters["TOP_MENU_blog_name"], "Index", "Blog")
@@ -19,7 +17,7 @@
             @foreach (var item in Model)
             {
                 <li>
-                    @Html.ActionLink(item.Name,"Details","Site", new {id=item.Id}, null)
+                    @Html.ActionLink(item.LinkTitle,"Index","Shop", new {categoryId=item.Id}, null)
                 </li>
             }
         </ul>

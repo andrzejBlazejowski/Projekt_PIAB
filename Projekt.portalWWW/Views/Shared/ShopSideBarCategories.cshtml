@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Projekt.Data.Data.Shop.ProductCategory>
+
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @Html.ActionLink(item.LinkTitle,"Index","Shop", new {categoryId=item.Id}, null)
+        </li>
+    }
+</ul>
