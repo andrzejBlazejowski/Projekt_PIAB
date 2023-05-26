@@ -6,15 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
+using Projekt.Data.Data.Sharded;
 using Projekt.Data.Data.Shop;
 
 namespace Projekt.intranet.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsOldController : Controller
     {
         private readonly ProjectContext _context;
 
-        public ProductsController(ProjectContext context)
+        public ProductsOldController(ProjectContext context)
         {
             _context = context;
         }
@@ -22,8 +23,13 @@ namespace Projekt.intranet.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.Product.Include(p => p.Image).Include(p => p.ProductCategory);
-            return View(await projectContext.ToListAsync());
+            return _context.Product != null ?
+                        View(await (
+                          from item in _context.Product
+                          where item.IsActive == true
+                          select item
+                  ).ToListAsync()) :
+                          Problem("Entity set 'ProjectContext.Product'  is null.");
         }
 
         // GET: Products/Details/5
@@ -36,7 +42,6 @@ namespace Projekt.intranet.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Image)
-                .Include(p => p.ProductCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -49,8 +54,7 @@ namespace Projekt.intranet.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData");
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle");
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData");
             return View();
         }
 
@@ -59,16 +63,20 @@ namespace Projekt.intranet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,ProductCategoryId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
+        public async Task<IActionResult> Create([Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
         {
+            product.LastModificationDate = DateTime.Now;
+            product.LastModifiedBy = 1;
+            product.CreationDate = DateTime.Now;
+            product.CreatedBy = 1;
+            product.IsActive = true;
             if (ModelState.IsValid)
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData", product.ImageId);
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle", product.ProductCategoryId);
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", product.ImageId);
             return View(product);
         }
 
@@ -85,8 +93,7 @@ namespace Projekt.intranet.Controllers
             {
                 return NotFound();
             }
-            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData", product.ImageId);
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle", product.ProductCategoryId);
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", product.ImageId);
             return View(product);
         }
 
@@ -95,8 +102,10 @@ namespace Projekt.intranet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,ProductCategoryId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
         {
+            product.LastModificationDate = DateTime.Now;
+            product.LastModifiedBy = 1;
             if (id != product.Id)
             {
                 return NotFound();
@@ -122,8 +131,7 @@ namespace Projekt.intranet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData", product.ImageId);
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle", product.ProductCategoryId);
+            ViewData["ImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", product.ImageId);
             return View(product);
         }
 
@@ -137,7 +145,6 @@ namespace Projekt.intranet.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Image)
-                .Include(p => p.ProductCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -159,7 +166,8 @@ namespace Projekt.intranet.Controllers
             var product = await _context.Product.FindAsync(id);
             if (product != null)
             {
-                _context.Product.Remove(product);
+                product.IsActive = false;
+                _context.Update(product);
             }
             
             await _context.SaveChangesAsync();

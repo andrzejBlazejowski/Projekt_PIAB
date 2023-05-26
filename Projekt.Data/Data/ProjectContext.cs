@@ -16,6 +16,7 @@ namespace Projekt.Data.Data
         public DbSet<FaqItem> FaqItem { get; set; }
         public DbSet<BlogPost> BlogPost { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
         public DbSet<Picture> Picture { get; set; }
         public DbSet<Parameter> Parameter { get; set; }
     }

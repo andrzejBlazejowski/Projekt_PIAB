@@ -36,6 +36,8 @@ namespace Projekt.Data.Data.Shop
 
         public int ImageId { get; set; }
         public Picture? Image { get; set; }
+        public int ProductCategoryId { get; set; }
+        public ProductCategory? ProductCategory { get; set; }
 
     }
 }

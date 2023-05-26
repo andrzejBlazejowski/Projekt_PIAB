@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projekt.Data.Data;
 
@@ -11,9 +12,11 @@ using Projekt.Data.Data;
 namespace Projekt.Data.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230526050425_M4")]
+    partial class M4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,17 +334,12 @@ namespace Projekt.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal");
 
-                    b.Property<int>("ProductCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("VatRate")
                         .HasColumnType("decimal");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");
-
-                    b.HasIndex("ProductCategoryId");
 
                     b.ToTable("Product");
                 });
@@ -373,7 +371,7 @@ namespace Projekt.Data.Migrations
                     b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
 
-                    b.Property<string>("LinkTitle")
+                    b.Property<string>("Link")
                         .IsRequired()
                         .HasMaxLength(600)
                         .HasColumnType("nvarchar(600)");
@@ -391,7 +389,12 @@ namespace Projekt.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductCategory");
                 });
@@ -426,15 +429,18 @@ namespace Projekt.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Projekt.Data.Data.Shop.ProductCategory", "ProductCategory")
-                        .WithMany("Product")
-                        .HasForeignKey("ProductCategoryId")
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Projekt.Data.Data.Shop.ProductCategory", b =>
+                {
+                    b.HasOne("Projekt.Data.Data.Shop.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Image");
-
-                    b.Navigation("ProductCategory");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Projekt.Data.Data.Sharded.Picture", b =>
@@ -444,11 +450,6 @@ namespace Projekt.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("Projekt.Data.Data.Shop.ProductCategory", b =>
-                {
-                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

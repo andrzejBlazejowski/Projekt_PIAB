@@ -1,8 +1,63 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "strona główna";
 }
+<h2>@ViewData["Title"]</h2>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col s12">
+        <h3>Ostatnie produkty</h3>
+        @foreach (var item in (IEnumerable<Projekt.Data.Data.Shop.Product>)ViewBag.PromotedProducts)
+        {
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-image">
+                        <img class="materialboxed" height="350" style="object-fit: cover;" src="@item.Image.ImageData">
+                        <span class="primary_text card-title secondary_bg col s12">@item.Name</span>
+
+                        <a class="btn-floating halfway-fab waves-effect waves-light primary_bg" href="@Url.Action("Details", "Product", new { id = item.Id })">
+                            <i class="tiny material-icons">add_shopping_cart</i>
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <p>@item.Content?.Substring(0, Math.Min(item.Content.Length, 500))</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="primary_link" href="@Url.Action("Details", "Product", new { id = item.Id })">
+                            @ViewBag.SiteParameters["SHOP_buy_btn"]
+                            <i class="tiny material-icons">add_shopping_cart</i>
+                        </a>
+                        <span class="price"> @item.Price PLN </span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @foreach (var item in (IEnumerable<Projekt.Data.Data.CMS.BlogPost>)ViewBag.LatestBlogPost)
+        {
+            <div class="row">
+                <div class="col s12">
+                    <h3>Ostatni Wpis na blogu</h3>
+                        <div class="col s12 m6 order-last">
+                            <h3>@item.Name</h3>
+                            <div>
+                                @item.Content?.Substring(0, Math.Min(item.Content.Length, 500))
+                            </div>
+                            @Html.ActionLink((string)ViewBag.SiteParameters["BLOG_read_more"], "Details", "Blog", new { id = item.Id }, new { @class = "waves-effect waves-light btn-large primary_bg mt-2" })
+
+                        </div>
+                        <div class="col s12 m6 order-first">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img class="materialboxed" height="350" style="object-fit: cover;" src="@item.HeaderImage?.ImageData">
+                                </div>
+
+                                <div class="card-action">
+                                    @Html.ActionLink((string)ViewBag.SiteParameters["BLOG_read_more"], "Details", "Blog", new { id = item.Id }, new { @class = "primary_link" })
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

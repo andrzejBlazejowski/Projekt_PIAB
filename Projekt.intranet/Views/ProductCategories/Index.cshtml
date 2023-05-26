@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Projekt.Data.Data.Shop.Product>
+﻿@model IEnumerable<Projekt.Data.Data.Shop.ProductCategory>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,28 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VatRate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CountInWearhouse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsVisible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BrandName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductCategory)
+                @Html.DisplayNameFor(model => model.LinkTitle)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MetaTitle)
@@ -70,28 +49,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VatRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CountInWearhouse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVisible)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BrandName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image.ImageData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductCategory.LinkTitle)
+                @Html.DisplayFor(modelItem => item.LinkTitle)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MetaTitle)
