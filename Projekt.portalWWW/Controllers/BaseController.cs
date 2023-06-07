@@ -37,27 +37,6 @@ namespace Projekt.portalWWW.Controllers
             ViewBag.SiteParameters = _context.Parameter.Where(p => p.IsActive == true)
                 .Select(p => new { p.Key, p.Value })
                 .ToDictionary(p => p.Key, p => p.Value);
-            /*
-                        ViewBag.BottomMenu =
-                            (
-                            // TBD
-                            ).ToList();
-
-                        ViewBag.SiteParameters =
-                            (
-                            // TBD
-                            ).ToList();
-
-                        ViewBag.socialMedia =
-                            (
-                            // TBD
-                            ).ToList();
-
-                        ViewBag.paymentMethods =
-                            (
-                            // TBD
-                            ).ToList();
-            */
         }
 
 

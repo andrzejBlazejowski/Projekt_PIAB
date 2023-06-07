@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
 using Projekt.Data.Data.Shop;
@@ -45,8 +46,6 @@ public abstract class BaseController<BaseData> : Controller
             return View();
         }
 
-
-        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -54,12 +53,49 @@ public abstract class BaseController<BaseData> : Controller
                 return NotFound();
             }
 
-            var element = getElementById();
+            var element = await getElementById((int)id);
             if (element == null)
             {
                 return NotFound();
             }
 
+            return View(element);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var element = await getElementById((int)id);
+            if (element == null)
+            {
+                return NotFound();
+            }
+            await SetSelectList();
+            return View(element);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, BaseData element)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(element);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            await SetSelectList();
             return View(element);
         }
 
