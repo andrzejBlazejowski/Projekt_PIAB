@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,25 +8,10 @@ using Projekt.Data.Data.Sharded;
 
 namespace Projekt.intranet.Controllers
 {
-    public class BlogPostsController : Controller
+    public class BlogPostsController : BaseController<BlogPost>
     {
-        private readonly ProjectContext _context;
-
-        public BlogPostsController(ProjectContext context)
+        public BlogPostsController(ProjectContext context) : base(context)
         {
-            _context = context;
-        }
-
-        // GET: BlogPosts
-        public async Task<IActionResult> Index()
-        {
-            return _context.BlogPost != null ?
-                        View(await (
-                          from blogPost in _context.BlogPost
-                          where blogPost.IsActive == true
-                          select blogPost
-                  ).ToListAsync()) :
-                          Problem("Entity set 'ProjectContext.BlogPost'  is null.");
         }
 
         // GET: BlogPosts/Details/5
@@ -50,35 +30,6 @@ namespace Projekt.intranet.Controllers
                 return NotFound();
             }
 
-            return View(blogPost);
-        }
-
-        // GET: BlogPosts/Create
-        public IActionResult Create()
-        {
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData");
-            return View();
-        }
-
-        // POST: BlogPosts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,HeaderImageId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] BlogPost blogPost)
-        {
-            blogPost.LastModificationDate = DateTime.Now;
-            blogPost.LastModifiedBy = 1;
-            blogPost.CreationDate = DateTime.Now;
-            blogPost.CreatedBy = 1;
-            blogPost.IsActive = true;
-            if (ModelState.IsValid)
-            {
-                _context.Add(blogPost);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["HeaderImageId"] = new SelectList(_context.Set<Picture>(), "Id", "ImageData", blogPost.HeaderImageId);
             return View(blogPost);
         }
 
@@ -171,14 +122,30 @@ namespace Projekt.intranet.Controllers
                 blogPost.IsActive = false;
                 _context.Update(blogPost);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BlogPostExists(int id)
         {
-          return (_context.BlogPost?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.BlogPost?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public override async Task SetSelectList()
+        {
+
+            var pictures = await _context.Picture.ToListAsync();
+            ViewBag.Pictures = new SelectList(pictures, "HeaderImageId", "Nazwa");
+        }
+
+        public override async Task<List<BlogPost>> getEntityList()
+        {
+            return await (
+                          from blogPost in _context.BlogPost
+                          where blogPost.IsActive == true
+                          select blogPost
+                  ).ToListAsync();
         }
     }
 }

@@ -10,20 +10,29 @@ using Projekt.Data.Data.Shop;
 
 namespace Projekt.intranet.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController<Product>
     {
-        private readonly ProjectContext _context;
-
         public ProductsController(ProjectContext context)
+            : base(context) { }
+
+
+        public override async Task<List<Product>> getEntityList()
         {
-            _context = context;
+            return await _context.Product.Include(p => p.Image).Include(p => p.ProductCategory).ToListAsync();
         }
 
-        // GET: Products
-        public async Task<IActionResult> Index()
+        public override async Task SetSelectList()
         {
-            var projectContext = _context.Product.Include(p => p.Image).Include(p => p.ProductCategory);
-            return View(await projectContext.ToListAsync());
+            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData");
+            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle");
+        }
+
+        public override async Task<Product> getElementById(int id)
+        {
+            return await _context.Product
+                .Include(p => p.Image)
+                .Include(p => p.ProductCategory)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         // GET: Products/Details/5
@@ -46,31 +55,6 @@ namespace Projekt.intranet.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
-        public IActionResult Create()
-        {
-            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData");
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle");
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,Price,VatRate,CountInWearhouse,IsVisible,BrandName,ImageId,ProductCategoryId,MetaTitle,MetaDescription,Id,Name,Description,IsActive,LastModificationDate,LastModifiedBy,CreationDate,CreatedBy")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ImageId"] = new SelectList(_context.Picture, "Id", "ImageData", product.ImageId);
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategory, "Id", "LinkTitle", product.ProductCategoryId);
-            return View(product);
-        }
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -170,5 +154,6 @@ namespace Projekt.intranet.Controllers
         {
           return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
     }
 }
