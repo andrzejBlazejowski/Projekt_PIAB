@@ -19,9 +19,7 @@ namespace Projekt.intranet.Controllers
 
         public override async Task SetSelectList()
         {
-
-            var pictures = await _context.Picture.ToListAsync();
-            ViewBag.Pictures = new SelectList(pictures, "HeaderImageId", "Nazwa");
+            ViewData["HeaderImageId"] = new SelectList(_context.Picture, "Id", "ImageData");
         }
 
         public override async Task<List<BlogPost>> getEntityList()

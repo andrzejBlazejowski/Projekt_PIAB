@@ -23,6 +23,23 @@ public abstract class BaseController<Entity> : Controller where Entity : BaseDat
             element.IsActive = false;
             _context.Update(element);
         }
+        public virtual Entity setDefaultsEditValues(Entity element)
+        {
+            element.IsActive = true;
+            element.LastModificationDate = DateTime.Now;
+            element.LastModifiedBy = 1;
+            return element;
+        }
+
+        public virtual Entity setDefaultsCreateValues(Entity element)
+        {
+            element.IsActive = true;
+            element.LastModificationDate = DateTime.Now;
+            element.LastModifiedBy = 1;
+            element.CreationDate = DateTime.Now;
+            element.CreatedBy = 1;
+            return element;
+        }
 
         public virtual Task SetSelectList()
         {
@@ -38,6 +55,7 @@ public abstract class BaseController<Entity> : Controller where Entity : BaseDat
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Entity entity)
         {
+            entity = setDefaultsCreateValues(entity);
             if (ModelState.IsValid)
             {
                 _context.Add(entity);
@@ -89,6 +107,7 @@ public abstract class BaseController<Entity> : Controller where Entity : BaseDat
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Entity element)
         {
+            element = setDefaultsEditValues(element);
             if (ModelState.IsValid)
             {
                 try
