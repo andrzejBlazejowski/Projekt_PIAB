@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
-using Projekt.Data.Data.CMS;
 using Projekt.Data.Data.Sharded;
-using Projekt.Data.Data.Shop;
-
 namespace Projekt.intranet.Controllers
 {
 public abstract class BaseController<Entity> : Controller where Entity : BaseData
@@ -28,6 +24,8 @@ public abstract class BaseController<Entity> : Controller where Entity : BaseDat
             element.IsActive = true;
             element.LastModificationDate = DateTime.Now;
             element.LastModifiedBy = 1;
+            element.CreationDate = DateTime.Now;
+            element.CreatedBy = 1;
             return element;
         }
 
@@ -56,14 +54,18 @@ public abstract class BaseController<Entity> : Controller where Entity : BaseDat
         public async Task<IActionResult> Create(Entity entity)
         {
             entity = setDefaultsCreateValues(entity);
-            if (ModelState.IsValid)
+            try
             {
                 _context.Add(entity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            catch (DbUpdateConcurrencyException)
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+                throw;
+            }
         }
         public async Task<IActionResult> Create()
         {
