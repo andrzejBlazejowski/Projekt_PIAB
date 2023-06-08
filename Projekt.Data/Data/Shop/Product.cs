@@ -38,6 +38,7 @@ namespace Projekt.Data.Data.Shop
         public Picture? Image { get; set; }
         public int ProductCategoryId { get; set; }
         public ProductCategory? ProductCategory { get; set; }
+        public List<CheckoutItem>? CheckoutItem { get; set; }
 
     }
 }

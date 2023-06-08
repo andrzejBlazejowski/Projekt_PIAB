@@ -10,7 +10,6 @@ namespace Projekt.Data.Data.Shop
         [MaxLength(600, ErrorMessage = "tytuł linku może zawierać maksymalnie 600 znaków ")]
         [Display(Name = "tytuł linku")]
         public string? LinkTitle { get; set; }
-
         public List<Product>? Product { get; set; }
 
     }

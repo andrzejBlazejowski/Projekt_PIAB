@@ -19,5 +19,6 @@ namespace Projekt.Data.Data
         public DbSet<ProductCategory> ProductCategory { get; set; }
         public DbSet<Picture> Picture { get; set; }
         public DbSet<Parameter> Parameter { get; set; }
+        public DbSet<CheckoutItem> CheckoutItem { get; set; }
     }
 }
