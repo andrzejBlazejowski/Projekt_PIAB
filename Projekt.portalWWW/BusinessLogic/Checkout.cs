@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Projekt.Data.Data;
 using Projekt.Data.Data.Shop;
 
@@ -12,6 +11,7 @@ namespace Projekt.portalWWW.BusinessLogic
         public Checkout(ProjectContext context, HttpContext httpContext)
         {
             _context = context;
+            SessionId = GetSessionId(httpContext);
             SessionId = GetSessionId(httpContext);
         }
 
@@ -31,50 +31,54 @@ namespace Projekt.portalWWW.BusinessLogic
             return httpContext.Session.GetString("SessionId");
         }
 
-        public void DodajDoKoszyka(Product product)
+        public async Task AddAsync(int productId)
         {
             CheckoutItem checkoutItem = _context.CheckoutItem
-                .Where(p => p.SessionId == SessionId && p.ProductId == product.Id)
+                .Where(p => p.SessionId == SessionId && p.ProductId == productId)
                 .FirstOrDefault();
 
             if (checkoutItem == null)
             {
+                Product product = _context.Product.Where(p => p.Id == productId).FirstOrDefault();
                 checkoutItem = new CheckoutItem()
                 {
                     SessionId = this.SessionId,
-                    ProductId = product.Id,
+                    ProductId = productId,
                     Product = product,
                     Quantity = 1,
+                    Name = product.Name,
                     LastModificationDate = DateTime.Now,
                     CreationDate = DateTime.Now,
                     LastModifiedBy = 1,
-                    CreatedBy = 1                
+                    CreatedBy = 1,
+                    IsActive = true,
                 };
                 _context.CheckoutItem.Add(checkoutItem);
+                await _context.SaveChangesAsync();
             }
             else
             {
-                checkoutItem.Quantity++;
-                _context.SaveChanges();
-
+                UpdateItemQuantity(checkoutItem.Id, checkoutItem.Quantity + 1);
             }
         }
 
-        public async Task<List<CheckoutItem>> getCheckoutItem()
+        public async Task<List<CheckoutItem>> getCheckoutItems()
         {
             return await _context.CheckoutItem
-                .Where(p => p.SessionId == SessionId)
+                .Where(p => p.SessionId == SessionId && p.IsActive == true)
                 .Include(p => p.Product)
+                    .ThenInclude(p => p.Image)
                 .ToListAsync();
         }
 
-        public async Task<decimal> getWartoscKoszyka()
+        public async Task<decimal> getTotalPrice()
         {
             return await _context.CheckoutItem
-                .Where(p => p.SessionId == SessionId)
+                .Where(p => p.SessionId == SessionId && p.IsActive == true)
                 .Select(p => p.Product.Price * p.Quantity)
                 .SumAsync();
         }
+
         public async Task<CheckoutItem> getCheckoutItemById(int id)
         {
             return await _context.CheckoutItem
@@ -83,11 +87,19 @@ namespace Projekt.portalWWW.BusinessLogic
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> UpdateCheckoutItem(int id, int quantity)
+        public async Task<bool> UpdateItemQuantity(int id, int quantity)
         {
             CheckoutItem checkoutItem = await getCheckoutItemById(id);
             if (checkoutItem != null)
             {
+                if (quantity > 0)
+                {
+                    checkoutItem.IsActive = true;
+                }
+                else
+                {
+                    checkoutItem.IsActive = false;
+                }
                 checkoutItem.Quantity = quantity;
                 checkoutItem.LastModificationDate = DateTime.Now;
                 _context.SaveChanges();
@@ -96,12 +108,36 @@ namespace Projekt.portalWWW.BusinessLogic
             return false;
         }
 
+        public async Task<bool> IncreaseItemQuantity(int id) 
+        {
+            CheckoutItem checkoutItem = await getCheckoutItemById(id);
+            if (checkoutItem != null)
+            {
+                return await UpdateItemQuantity(id, checkoutItem.Quantity + 1);
+            }
+            return false;
+        }
+
+
+        public async Task<bool> DecreaseItemQuantity(int id)
+        {
+            {
+                CheckoutItem checkoutItem = await getCheckoutItemById(id);
+                if (checkoutItem != null)
+                {
+                    return await UpdateItemQuantity(id, checkoutItem.Quantity - 1);
+                }
+                return false;
+            }
+        }
+
         public async Task<bool> DeleteCheckoutItem(int id)
         {
             CheckoutItem checkoutItem = await getCheckoutItemById(id);
             if (checkoutItem != null)
             {
-                _context.CheckoutItem.Remove(checkoutItem);
+                checkoutItem.IsActive = false;
+                checkoutItem.LastModificationDate = DateTime.Now;
                 _context.SaveChanges();
                 return true;
             }

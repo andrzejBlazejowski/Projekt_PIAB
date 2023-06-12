@@ -39,6 +39,5 @@ namespace Projekt.Data.Data.Shop
         public int ProductCategoryId { get; set; }
         public ProductCategory? ProductCategory { get; set; }
         public List<CheckoutItem>? CheckoutItem { get; set; }
-
     }
 }
