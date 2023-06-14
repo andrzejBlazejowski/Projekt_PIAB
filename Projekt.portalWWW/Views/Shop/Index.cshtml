@@ -23,7 +23,10 @@
                         </a>
                     </div>
                     <div class="card-content">
-                            <p>@item.Content?.Substring(0, Math.Min(item.Content.Length, 500))</p>
+                        <p>@item.Content?.Substring(0, Math.Min(item.Content.Length, 350))</p>
+                        <a class="primary_link" href="@Url.Action("Details", "Shop", new { id = item.Id })">
+                            @ViewBag.SiteParameters["SHOP_SEE_DETAILS"]
+                        </a>
                     </div>
                     <div class="card-action">
                         <a class="primary_link" href="@Url.Action("AddToCart", "CheckoutItem", new { productId = item.Id })">
@@ -43,15 +46,15 @@
     <div class="col s12 l3">
 
         <div class="input-field col s12">
-            <input type="search" id="search-field" placeholder="szukaj…" class="validate" value="" name="s">
-            <button id="search-btn" class="waves-effect waves-light btn primary_bg accent-3" type="submit">Szukaj</button>
+            <input type="search" id="search-field" placeholder="@ViewBag.SiteParameters["SHOP_FILTER_SEARCH"]…" class="validate" value="" name="s">
+            <button id="search-btn" class="waves-effect waves-light btn primary_bg accent-3" type="submit">@ViewBag.SiteParameters["SHOP_FILTER_SEARCH"]</button>
         </div>
 
         <div>
-            <h3>Filtrowanie</h3>
+            <h3>@ViewBag.SiteParameters["SHOP_FILTER_TITLE"]</h3>
 
                 <div class="col s12">
-                    <label style="height: 50px">Cena :</label>
+                <label style="height: 50px">@ViewBag.SiteParameters["SHOP_PRICE"] :</label>
                     <div class="input-field col s12 mt-5 pt-4">
                         <div class="col s12" style="height: 50px; position: relative; margin-top:50px;">
                             <div class="m-5" id="price-slider"></div>
@@ -62,25 +65,25 @@
 
 
                 <div class="col s12">
-                    <label style="">Sortuj według :</label>
+                <label style="">@ViewBag.SiteParameters["SHOP_FILTER_SORT_BY"]</label>
 
                     <div class=" col s12">
                         <select id="sort-select">
-                            <option value="Name">Nazwy</option>
-                            <option value="Price">Ceny</option>
-                            <option selected value="dateAdded">daty dodania</option>
+                        <option value="Name">@ViewBag.SiteParameters["SHOP_SORT_NAME"]</option>
+                        <option value="Price">@ViewBag.SiteParameters["SHOP_SORT_PRICE"]</option>
+                        <option selected value="dateAdded">@ViewBag.SiteParameters["SHOP_SORT_CREATION_DATE"]</option>
                         </select>
                     </div>
                 </div>
 
                 <div class=" input-field col s12">
-                <button id="filter-btn" class="waves-effect waves-light btn primary_bg accent-3" type="submit">Filtruj</button>
+                <button id="filter-btn" class="waves-effect waves-light btn primary_bg accent-3" type="submit">@ViewBag.SiteParameters["SHOP_FILTER_SUBMIT_BUTTON"]</button>
                 </div>
         </div>
 
 
         <div class="input-field col s12">
-            <h3>Kategorie</h3>
+            <h3>>@ViewBag.SiteParameters["SHOP_FILTER_CATEGORIES"]</h3>
 
             @await Html.PartialAsync("ShopSideBarCategories", (IEnumerable<Projekt.Data.Data.Shop.ProductCategory>) ViewBag.ProductCategories)
         </div>

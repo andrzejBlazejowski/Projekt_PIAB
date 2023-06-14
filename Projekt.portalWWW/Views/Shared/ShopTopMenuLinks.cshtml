@@ -9,6 +9,11 @@
                 @Html.ActionLink("Home", "Index", "Home")
             </li>
             <li>
+                <a href="@Url.Action("Index", "Shop", new { categoryId = 0 })">
+                    @ViewBag.SiteParameters["TOP_MENU_shop_name"]
+                </a>
+            </li>
+            <li>
                 @Html.ActionLink((string)ViewBag.SiteParameters["TOP_MENU_blog_name"], "Index", "Blog")
             </li>
             <li>

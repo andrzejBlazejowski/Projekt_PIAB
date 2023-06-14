@@ -38,7 +38,9 @@
 
                                             <div class="price-quantity-wrapper">
                                                 <div class="price-wrapper" data-price-wrapper="">
-                                                    <label style="transform: none;">cena</label>
+                                                    <label style="transform: none;">
+                                                        @ViewBag.SiteParameters["SHOP_PRICE"]
+                                                    </label>
                                                     <span style="font-size: 14px;" data-product-price="">
                                                         @item.Product.Price
                                                         PLN
@@ -71,12 +73,12 @@
                             </div>
 
                         }
-                        <a class="btn-large primary_bg" href="@Url.Action("Index", "Shop", new { categoryId = 0 })" data-stop-propagation="true">Dobierz produkty</a>
+                        <a class="btn-large primary_bg" href="@Url.Action("Index", "Shop", new { categoryId = 0 })" data-stop-propagation="true">@ViewBag.SiteParameters["CHECKOUT_ADD_PRODUCTS"]</a>
                     }
                     else
                     {
-                        <p>Brak produktów w koszyku</p>
-                        <a class="btn-large primary_bg" href="@Url.Action("Index", "Shop", new { categoryId = 0 })" data-stop-propagation="true">Zrób zakupy</a>
+                        <p>@ViewBag.SiteParameters["CHECKOUT_NO_PRODUCTS_MSG"]</p>
+                        <a class="btn-large primary_bg" href="@Url.Action("Index", "Shop", new { categoryId = 0 })" data-stop-propagation="true">@ViewBag.SiteParameters["CHECKOUT_ADD_PRODUCTS_BUTTON"]</a>
 
                     }
 
@@ -88,20 +90,20 @@
             @if (Model.CheckoutItems.Count > 0)
             {
                 <div class="col s12 l4 cart-summary">
-                    <h4>Summary</h4>
+                    <h4>@ViewBag.SiteParameters["CHECKOUT_SUMMARY"]</h4>
 
                     <div class="input-field cart-notes">
                         <textarea class="materialize-textarea" name="note" id="CartSpecialInstructions"></textarea>
-                        <label for="CartSpecialInstructions">Uwagi do zamówienia dla sprzedawcy</label>
+                        <label for="CartSpecialInstructions">@ViewBag.SiteParameters["CHECKOUT_NOTES"]</label>
                     </div>
 
 
-                    <div class="subtotal">
-                        <span>Razem</span>
-                        <div class="price">@Model.Total PLN</div>
+                    <div class="row ">
+                        <h4>Razem @Model.Total PLN</h4>
                     </div>
-
-                    <input type="submit" name="checkout" readonly class="btn-large primary_bg" style="padding-left: 15px;" value="dostawa i płatność">
+                    <div class="row">
+                        <input type="submit" name="checkout" readonly class="btn-large primary_bg" style="padding-left: 15px;" value="@ViewBag.SiteParameters["CHECKOUT_PROCCEDE_BUTTON"]">
+                    </div>
                 </div>
             }
         </div>

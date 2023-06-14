@@ -15,6 +15,9 @@
                     </div>
                     <div class="card-content">
                         <p>@item.Content?.Substring(0, Math.Min(item.Content.Length, 500))</p>
+                        <a class="primary_link" href="@Url.Action("Details", "Shop", new { id = item.Id })">
+                            @ViewBag.SiteParameters["SHOP_SEE_DETAILS"]
+                        </a>
                     </div>
                     <div class="card-action">
                         <a class="primary_link" href="@Url.Action("AddToCart", "CheckoutItem", new { productId = item.Id })">
